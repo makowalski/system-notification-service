@@ -13,7 +13,6 @@ libraryDependencies ++= Seq(
   "io.kamon" %% "kamon-statsd" % "0.6.6",
   "org.scalatest" %% "scalatest" % "3.0.1" % "test",
   "com.typesafe.akka" %% "akka-testkit" % "2.4.17" % "test",
-  "org.mockito" % "mockito-core" % "2.2.9" % "test",
   "org.scalamock" %% "scalamock-scalatest-support" % "3.5.0" % "test"
 )
 
