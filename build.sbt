@@ -75,4 +75,4 @@ val customMergeStrategy: String => sbtassembly.MergeStrategy = {
     defaultMergeStrategy(s)
 }
 
-assemblyMergeStrategy  in assembly := customMergeStrategy
+assemblyMergeStrategy in assembly := customMergeStrategy
