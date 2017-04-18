@@ -20,3 +20,7 @@ object Notification extends MongoSupport {
 }
 
 case class Notification(userId: String, text: String, date: String)
+
+case class Notifications(notifications: List[Notification])
+
+object Read
