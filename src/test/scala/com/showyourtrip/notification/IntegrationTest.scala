@@ -8,6 +8,8 @@ import com.showyourtrip.notification.models.{Notification, Notifications, Read}
 import com.showyourtrip.notification.services.{ConsumerActor, NotificationActor, StoreActor}
 import org.scalatest.{BeforeAndAfterAll, FunSuiteLike}
 
+import scala.concurrent.Future
+
 class IntegrationTest extends TestKit(ActorSystem("test-system"))
   with FunSuiteLike
   with ImplicitSender
@@ -33,15 +35,17 @@ class IntegrationTest extends TestKit(ActorSystem("test-system"))
     val message = Message("system", "simpleReceiver", "simpleText", "simpleDate")
     consumerActor ! message
 
-    // TODO fix wait until user is created
-    Thread.sleep(500)
-
-    val notification = Notification("simpleReceiver", "simpleText", "simpleDate")
-    val userActor = system.actorSelection("akka.tcp://test-system@127.0.0.1:3653/user/notification/user-simpleReceiver")
-    userActor ! Read
-    expectMsg(Notifications(List(notification)))
+    Future {
+      while (true) {
+        val actor = system.actorSelection("akka.tcp://test-system@127.0.0.1:3653/user/notification/user-simpleReceiver")
+        actor ! Read
+      }
+    }
+    fishForMessage() {
+      case Notifications(List(Notification("simpleReceiver", "simpleText", "simpleDate"))) => true
+      case _ => false
+    }
   }
-
 }
 
 class MockEventHandler extends Actor {
